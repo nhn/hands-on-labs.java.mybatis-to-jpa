@@ -1,0 +1,22 @@
+**********************
+Repository 생성
+**********************
+
+ItemRepository 인터페이스를 생성합니다
+===================================
+
+.. code-block:: java
+
+    package com.nhnent.forward.mybatistojpa.repository;
+
+    public interface ItemRepository extends JpaRepository<Item, Long> {
+    }
+
+
+OrderRepository 인터페이스를 생성합니다
+=====================================
+
+.. code-block:: java
+
+    public interface OrderRepository extends JpaRepository<Order, Long> {
+    }

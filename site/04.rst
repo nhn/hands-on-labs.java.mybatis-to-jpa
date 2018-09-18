@@ -1,0 +1,114 @@
+************
+Entity 생성
+************
+
+Item Entity 클래스를 생성합니다
+=================================================
+
+.. code-block:: java
+
+    package com.nhnent.forward.mybatistojpa.entity;
+    
+    @Getter
+    @Entity
+    @Table(name = "Items")
+    public class Item {
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @Column(name = "item_id")
+        private Long itemId;
+
+        @Column(name = "item_name")
+        private String itemName;
+
+        private Long price;
+
+    }
+
+Order Entity 클래스를 생성합니다
+=================================================
+
+.. code-block:: java
+
+    @Getter
+    @Entity
+    @Table(name = "Orders")
+    public class Order {
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @Column(name = "order_id")
+        private Long orderId;
+
+        @Temporal(TemporalType.TIMESTAMP)
+        @Column(name = "order_date")
+        private Date orderDate;
+
+    }
+
+
+OrderItem Entity 클래스를 생성합니다
+=================================================
+
+.. code-block:: java
+
+    @Getter
+    @Entity
+    @Table(name = "OrderItems")
+    public class OrderItem {
+        @EmbeddedId
+        private Pk pk;
+
+        @ManyToOne
+        @JoinColumn(name = "item_id")
+        private Item item;
+
+        @Column
+        private Integer quantity;
+
+
+        /*
+        * Composite-id class must implement serializable.
+        * Composite-id class must define equals and hashCode methods.
+        */
+        @Getter
+        @Setter
+        @NoArgsConstructor
+        @AllArgsConstructor
+        @EqualsAndHashCode
+        @Embeddable
+        public static class Pk implements Serializable {
+            @Column(name = "order_id")
+            private Long orderId;
+
+            @Column(name = "line_number")
+            private Integer lineNumber;
+
+        }
+
+    }
+
+
+Order Entity 클래스에 OrderItem Entity로의 연관관계를 추가합니다
+=========================================================
+
+.. code-block:: java
+
+    @Getter
+    @Entity
+    @Table(name = "Orders")
+    public class Order {
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @Column(name = "order_id")
+        private Long orderId;
+
+        @Temporal(TemporalType.TIMESTAMP)
+        @Column(name = "order_date")
+        private Date orderDate;
+
+        // Order-OrderItem 연관관계 추가
+        @OneToMany
+        @JoinColumn(name = "order_id", insertable = false, updatable = false)
+        List<OrderItem> orderItems;
+
+    }

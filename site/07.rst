@@ -1,0 +1,83 @@
+**********************
+Pagination 구현 수정
+**********************
+
+JPA 설정에 @EnableSpringDataWebSupport 추가
+================================================
+
+Spring Data JPA에서 제공해주는 Pageable 인터페이스를 사용하기 위해 JPA 설정에 `EnableSpringDataWebSupport` 어노테이션을 추가합니다
+
+.. code-block:: java
+
+    // ...
+    // Pageable 인터페이스를 사용하기 위해 @EnableSpringDataWebSupport 추가
+    @EnableSpringDataWebSupport
+    public class JpaConfig {
+            /* 생략 */
+    }    
+
+ItemController에서 Pageable 객체를 파라미터로 받도록 수정
+============================================================
+
+ItemController에서 pagination 처리를 위해 사용하던 `page` 파라미터 대신 Pageable 객체를 받도록 수정합니다
+
+.. code-block:: java
+
+    public class ItemController {
+        // ...
+
+        @GetMapping("")
+        public Page<Item> getItems(Pageable pageable) {
+            return itemService.getItems(pageable);
+        }
+
+        // ...
+    }
+
+OrderController에서 Pageable 객체를 파라미터로 받도록 수정
+============================================================
+
+OrderController에서도 `page` 파라미터 대신 Pageable 객체를 받도록 수정합니다
+
+.. code-block:: java
+
+    public class OrderController {
+        // ...
+
+        @GetMapping("")
+        public Page<Order> getOrders(Pageable pageable) {
+            return orderService.getOrders(pageable);
+        }
+
+        // ...
+    }
+
+ItemService에서도 Pageable 파라미터를 받도룩 수정
+============================================================
+
+.. code-block:: java
+
+    @Service
+    public class ItemService {
+        // ...
+
+        public Page<Item> getItems(Pageable pageable) {
+            return itemRepository.findAll(pageable);
+        }
+    }
+
+
+OrderService에서도 Pageable 파라미터를 받도룩 수정
+============================================================
+
+.. code-block:: java
+
+    @Service
+    public class OrderService {
+        // ...
+
+        public Page<Order> getOrders(Pageable pageable) {
+            return orderRepository.findAll(pageable);
+        }
+
+    }

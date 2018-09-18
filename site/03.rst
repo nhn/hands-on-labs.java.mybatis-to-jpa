@@ -1,0 +1,119 @@
+*********
+JPA 설정
+*********
+
+JPA 설정을 위한 Configuration 클래스를 생성합니다
+=================================================
+
+.. code-block:: java
+
+    package com.nhnent.forward.mybatistojpa.config;
+
+    @Configuration
+    public class JpaConfig {
+    }    
+
+설정 파일에 대한 설정을 추가합니다
+===================================
+
+* property 파일에서 jdbc 설정 정보를 가져올 수 있도록 `@PropertySource` 와 `@Value` 어노테이션을 설정합니다
+
+.. code-block:: java
+
+    @Configuration
+    @PropertySource("classpath:/properties/jdbc.properties")
+    public class JpaConfig {
+            @Value("${jdbc.driverClassName}")
+            private String driveClassName;
+
+            @Value("${jdbc.url}")
+            private String url;
+
+            @Value("${jdbc.username}")
+            private String username;
+
+            @Value("${jdbc.password}")
+            private String password;
+
+    }    
+
+JPA Repository와 트랙잭션 설정을 추가합니다
+=============================================
+
+.. code-block:: java
+
+    // ...
+    // JPA Repository 설정 추가 
+    @EnableJpaRepositories("com.nhnent.forward.mybatistojpa.repository")
+    // 트랜잭션 설정 추가
+    @EnableTransactionManagement
+    public class JpaConfig {
+            /* 생략 */
+    }    
+
+data source 설정 Bean 메쏘드를 추가합니다
+==========================================
+
+.. code-block:: java
+
+    public class JpaConfig {
+        // ...
+
+        @Bean
+        public DataSource dataSource() {
+            BasicDataSource dataSource = new BasicDataSource();
+            dataSource.setDriverClassName(driveClassName);
+            dataSource.setUrl(url);
+            dataSource.setUsername(username);
+            dataSource.setPassword(password);
+
+            return dataSource;
+        }
+    }        
+
+entityManagerFactory 와 transactionManager Bean 메쏘드를 추가합니다
+===========================================================
+
+.. code-block:: java
+
+    public class JpaConfig {
+        // ...
+         
+        @Bean
+        public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
+            LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
+            emf.setDataSource(dataSource);
+            emf.setPackagesToScan("com.nhnent.forward.mybatistojpa.entity");
+            emf.setJpaVendorAdapter(jpaVendorAdapters());
+            emf.setJpaProperties(jpaProperties());
+
+            return emf;
+        }
+
+        @Bean
+        public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
+            JpaTransactionManager transactionManager = new JpaTransactionManager();
+            transactionManager.setEntityManagerFactory(entityManagerFactory);
+
+            return transactionManager;
+        }
+
+        private JpaVendorAdapter jpaVendorAdapters() {
+            HibernateJpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
+            hibernateJpaVendorAdapter.setDatabasePlatform("org.hibernate.dialect.MySQL5Dialect");
+
+            return hibernateJpaVendorAdapter;
+        }
+
+        private Properties jpaProperties() {
+            Properties jpaProperties = new Properties();
+            jpaProperties.setProperty("hibernate.show_sql", "true");
+            jpaProperties.setProperty("hibernate.format_sql", "true");
+            jpaProperties.setProperty("hibernate.use_sql_comments", "true");
+            jpaProperties.setProperty("hibernate.globally_quoted_identifiers", "true");
+            jpaProperties.setProperty("hibernate.temp.use_jdbc_metadata_defaults", "false");
+
+            return jpaProperties;
+        }
+    }
+

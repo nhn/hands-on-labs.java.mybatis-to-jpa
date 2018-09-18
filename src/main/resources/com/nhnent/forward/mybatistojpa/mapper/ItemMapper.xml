@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nhnent.forward.mybatistojpa.mapper.ItemMapper">
+    <sql id="itemFields">
+        `item_id`,
+        `item_name`,
+        `price`
+    </sql>
+
+    <select id="getItem" resultType="Item">
+        select
+          <include refid="itemFields" />
+        from `Items`
+        where `item_id` = #{value}
+    </select>
+
+    <select id="getItemCount" resultType="int">
+        select
+          count(*) as cnt
+        from `Items`;
+    </select>
+
+    <select id="getItems" resultType="Item">
+        select
+          <include refid="itemFields" />
+        from `Items`
+        order by `item_id` asc
+        limit #{offset}, #{limit}
+    </select>
+</mapper>

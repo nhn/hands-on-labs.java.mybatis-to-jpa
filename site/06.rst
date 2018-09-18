@@ -1,0 +1,34 @@
+**********************
+Service 수정
+**********************
+
+ItemService에서 ItemMapper 대신 ItemRepository를 참조하도록 수정합니다
+==================================================================
+
+ItemService에서 ItemMapper 대신 ItemRepository를 참조하도록 수정합니다
+
+.. code-block:: java
+
+    @Service
+    public class ItemService {
+        @Autowired
+        private ItemRepository itemRepository;
+
+        // ...
+    }
+
+
+OrderService에서 OrderMapper 대신 OrderReposity를 참조하도록 수정합니다
+==================================================================    
+
+
+.. code-block:: java
+
+    @Service
+    public class OrderService {
+        @Autowired
+        private OrderRepository orderRepository;
+
+        // ...
+    }
+

@@ -4,6 +4,7 @@ import com.nhnent.forward.mybatistojpa.model.Item;
 import com.nhnent.forward.mybatistojpa.model.Page;
 import com.nhnent.forward.mybatistojpa.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,12 +26,8 @@ public class ItemController {
 
     // NOTE #20 : ItemController에서의 pagination 구현 (page 파라미터)
     @GetMapping("")
-    public List<Item> getItems(@RequestParam(defaultValue = "1") int page) {
-        if (page < 1) {
-            page = 1;
-        }
-
-        return itemService.getItems(page, Page.PAGE_SIZE);
+    public List<Item> getItems(Pageable pageable) {
+        return itemService.getItems(pageable);
     }
 
     @GetMapping("/{itemId}")

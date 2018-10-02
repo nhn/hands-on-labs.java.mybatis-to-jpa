@@ -2,17 +2,26 @@
 Entity 생성
 ************
 
+* Entity는 JPA를 이용해서 데이터베이스 테이블과 맵핑할 클래스입니다
+
 Item Entity 클래스를 생성합니다
 =================================================
+
+* `@Entity` : JPA가 관리할 객체임을 명시
+* `@Table` : 맵핑할 데이터베이스 테이블 이름을 명시
+* `@Id` : 기본 키(PK) 맵핑
+* `@Column` : 필드와 컬럼을 맵핑 (생략 가능)
+* `@GeneratedValue` : 기본 키 맵핑 전략을 지정
 
 .. code-block:: java
 
     package com.nhnent.forward.mybatistojpa.entity;
     
     @Getter
+    @Setter
     @Entity
     @Table(name = "Items")
-    public class Item {
+    public class ItemEntity {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "item_id")
@@ -28,12 +37,15 @@ Item Entity 클래스를 생성합니다
 Order Entity 클래스를 생성합니다
 =================================================
 
+* `Temporal` : 날짜 타입 컬럼 맵핑
+
 .. code-block:: java
 
     @Getter
+    @Setter
     @Entity
     @Table(name = "Orders")
-    public class Order {
+    public class OrderEntity {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "order_id")
@@ -49,27 +61,27 @@ Order Entity 클래스를 생성합니다
 OrderItem Entity 클래스를 생성합니다
 =================================================
 
+* `OrderItems` 테이블은 `order_id` 컬럼과 `line_number` 컬럼으로 이루어진 복합키를 가집니다.
+* `@EmbeddedId`와 `@Embeddable`를 이용해서 복합키를 설정합니다
+    * `@EmbeddedId` : Entity 클래스의 필드에 지정
+    * `@Embeddable` : 복합키 식별자 클래스에 지정
+
 .. code-block:: java
 
     @Getter
+    @Setter
     @Entity
     @Table(name = "OrderItems")
-    public class OrderItem {
+    public class OrderItemEntity {
+        // 복합키 필드
         @EmbeddedId
-        private Pk pk;
-
-        @ManyToOne
-        @JoinColumn(name = "item_id")
-        private Item item;
+        private Pk pk = new Pk();
 
         @Column
         private Integer quantity;
 
 
-        /*
-        * Composite-id class must implement serializable.
-        * Composite-id class must define equals and hashCode methods.
-        */
+        // 복합키 식별자 클래스
         @Getter
         @Setter
         @NoArgsConstructor
@@ -84,31 +96,5 @@ OrderItem Entity 클래스를 생성합니다
             private Integer lineNumber;
 
         }
-
-    }
-
-
-Order Entity 클래스에 OrderItem Entity로의 연관관계를 추가합니다
-=========================================================
-
-.. code-block:: java
-
-    @Getter
-    @Entity
-    @Table(name = "Orders")
-    public class Order {
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        @Column(name = "order_id")
-        private Long orderId;
-
-        @Temporal(TemporalType.TIMESTAMP)
-        @Column(name = "order_date")
-        private Date orderDate;
-
-        // Order-OrderItem 연관관계 추가
-        @OneToMany
-        @JoinColumn(name = "order_id", insertable = false, updatable = false)
-        List<OrderItem> orderItems;
 
     }

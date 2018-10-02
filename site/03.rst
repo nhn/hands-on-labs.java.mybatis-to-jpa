@@ -51,8 +51,8 @@ JPA Repository와 트랙잭션 설정을 추가합니다
     // 트랜잭션 설정 추가
     @EnableTransactionManagement
     public class JpaConfig {
-            /* 생략 */
-    }    
+        // ...
+    }
 
 data source 설정 Bean 메쏘드를 추가합니다
 ==========================================
@@ -77,10 +77,10 @@ data source 설정 Bean 메쏘드를 추가합니다
 entityManagerFactory 와 transactionManager Bean 메쏘드를 추가합니다
 ===========================================================
 
-* Entity는 JPA를 이용해서 데이터베이스 테이블과 맵핑할 클래스이다
-* JPA는 EntityManager를 통해서 Entity의 저장, 수정, 삭제, 조회 등 Entity와 관련된 모든 일을 처리한다
-* EntityManagerFactory는 EntityManager를 생성하는 팩토리다
-* JPA를 이용하기 위해서는 EntityManagerFactory Bean과 transactionManager Bean을 설정해주어야 한다
+* Entity는 JPA를 이용해서 데이터베이스 테이블과 맵핑할 클래스입니다
+* JPA는 EntityManager를 통해서 Entity의 저장, 수정, 삭제, 조회 등 Entity와 관련된 모든 일을 처리합니다
+* EntityManagerFactory는 EntityManager를 생성하는 팩토리입니다
+* JPA를 이용하기 위해서는 EntityManagerFactory Bean과 transactionManager Bean을 설정해주어야 합니다
 
 .. code-block:: java
 

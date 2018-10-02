@@ -36,6 +36,7 @@ mybatis 라이브러리 삭제
 .. code-block:: xml
 
         <!-- 아래 라이브러리는 삭제합니다 -->
+        <!--
         <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis</artifactId>
@@ -47,4 +48,5 @@ mybatis 라이브러리 삭제
             <artifactId>mybatis-spring</artifactId>
             <version>1.3.2</version>
         </dependency>
+        -->
 

@@ -1,5 +1,6 @@
 package com.nhnent.forward.mybatistojpa.entity;
 
+import com.nhnent.forward.mybatistojpa.model.OrderItem;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -37,6 +38,17 @@ public class OrderItemEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("orderId")
     private OrderEntity order;
+
+
+    public OrderItem toOrderItemDto() {
+        OrderItem orderItemDto = new OrderItem();
+        orderItemDto.setOrderId(this.pk.getOrderId());
+        orderItemDto.setLineNumber(this.pk.getLineNumber());
+        orderItemDto.setQuantity(this.quantity);
+        orderItemDto.setItem(this.item.toItemDto());
+
+        return orderItemDto;
+    }
 
 
     /*

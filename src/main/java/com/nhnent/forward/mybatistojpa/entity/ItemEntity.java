@@ -1,5 +1,6 @@
 package com.nhnent.forward.mybatistojpa.entity;
 
+import com.nhnent.forward.mybatistojpa.model.Item;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,5 +25,15 @@ public class ItemEntity {
     private String itemName;
 
     private Long price;
+
+
+    public Item toItemDto() {
+        Item itemDto = new Item();
+        itemDto.setItemId(this.itemId);
+        itemDto.setItemName(this.itemName);
+        itemDto.setPrice(this.price);
+
+        return itemDto;
+    }
 
 }

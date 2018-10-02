@@ -24,7 +24,7 @@ public class OrderEntity {
     @Column(name = "order_date")
     private Date orderDate;
 
-    @OneToMany(mappedBy = "order", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
     List<OrderItemEntity> orderItems = new ArrayList<>();
 
 

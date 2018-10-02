@@ -10,6 +10,10 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.Table;
 import java.io.Serializable;
 
@@ -23,6 +27,16 @@ public class OrderItemEntity {
 
     @Column
     private Integer quantity;
+
+
+    @JoinColumn(name = "item_id")
+    @ManyToOne
+    private ItemEntity item;
+
+    @JoinColumn(name = "order_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("orderId")
+    private OrderEntity order;
 
 
     /*

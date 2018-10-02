@@ -1,11 +1,30 @@
 **********************
-Service 수정
+어플리케이션에서의 사용
 **********************
+
+ItemEntity 클래스에 DTO로의 변환 메쏘드를 추가합니다
+==================================================================
+
+* ItemService 메쏘드들의 반환값을 기존과 동일하게 Item DTO로 맞추기 위해 ItemEntity 클래스에 Item DTO로의 변환 메쏘드를 추가합니다
+
+.. code-block:: java
+
+    public class ItemEntity {
+        // ...
+
+        public Item toItemDto() {
+            Item itemDto = new Item();
+            itemDto.setItemId(this.itemId);
+            itemDto.setItemName(this.itemName);
+            itemDto.setPrice(this.price);
+
+            return itemDto;
+        }
+    }
+
 
 ItemService에서 ItemMapper 대신 ItemRepository를 참조하도록 수정합니다
 ==================================================================
-
-ItemService에서 ItemMapper 대신 ItemRepository를 참조하도록 수정합니다
 
 .. code-block:: java
 
@@ -17,9 +36,124 @@ ItemService에서 ItemMapper 대신 ItemRepository를 참조하도록 수정합�
         // ...
     }
 
+ItemService의 `getItem()` 메쏘드를 수정합니다
+==================================================================
 
-OrderService에서 OrderMapper 대신 OrderReposity를 참조하도록 수정합니다
-==================================================================    
+* `itemMapper.getItem()` 대신 `itemRepository.findOne()` 메쏘드를 사용하도록 수정합니다
+* `itemRepository.findOne()` 메쏘드가 ItemEntity를 반환하므로 `toItemDto()` 메쏘드를 호출하여 DTO로 변환해서 반환하도록 합니다
+
+.. code-block:: java
+
+    public class ItemService {
+        public Item getItem(Long itemId) {
+            return itemRepository.findOne(itemId).toItemDto();
+        }
+    }
+
+ItemService의 `createItem()` 메쏘드를 수정합니다
+==================================================================
+
+* `itemMapper.insertItem()` 메쏘드 호출 대신에, ItemEntity 클래스의 객체를 생성한 후 `itemRepository.save()` 메쏘드를 호출합니다
+* `itemRepository.save()` 메쏘드가 ItemEntity를 반환하므로 `toItemDto()` 메쏘드를 호출하여 DTO로 변환해서 반환하도록 합니다
+
+.. code-block:: java
+
+    public class ItemService {
+        public Item createItem(Item item) {
+            ItemEntity entity = new ItemEntity();
+            entity.setItemName(item.getItemName());
+            entity.setPrice(item.getPrice());
+
+            return itemRepository.save(entity).toItemDto();
+        }
+    }
+
+
+ItemService의 `updateItem()` 메쏘드를 수정합니다
+==================================================================
+
+* `itemMapper.updateItem()` 메쏘드 호출 대신에, ItemEntity 클래스의 객체를 변경한 후 `itemRepository.save()` 메쏘드를 호출합니다
+* `itemRepository.save()` 메쏘드가 ItemEntity를 반환하므로 `toItemDto()` 메쏘드를 호출하여 DTO로 변환해서 반환하도록 합니다
+
+.. code-block:: java
+
+    public class ItemService {
+        public Item updateItem(Item item) {
+            ItemEntity itemEntity = new ItemEntity();
+            itemEntity.setItemId(item.getItemId());
+            itemEntity.setItemName(item.getItemName());
+            itemEntity.setPrice(item.getPrice());
+
+            return itemRepository.save(itemEntity).toItemDto();
+        }
+    }
+
+ItemService의 `deleteItem()` 메쏘드를 수정합니다
+==================================================================
+
+* `itemMapper.deleteItem()` 메쏘드 호출 대신 `itemRepository.delete()` 메쏘드를 사용하도록 수정합니다
+
+.. code-block:: java
+
+    public class ItemService {
+        public boolean deleteItem(Long itemId) {
+            itemRepository.delete(itemId);
+            return true;
+        }
+    }
+
+OrderItemEntity 클래스에 DTO로의 변환 메쏘드를 추가합니다
+==================================================================
+
+* OrderItemEntity 클래스에 OrderItem DTO로의 변환 메쏘드를 추가합니다
+
+.. code-block:: java
+
+    public class OrderItemEntity {
+        // ...
+
+        public OrderItem toOrderItemDto() {
+            OrderItem orderItemDto = new OrderItem();
+            orderItemDto.setOrderId(this.pk.getOrderId());
+            orderItemDto.setLineNumber(this.pk.getLineNumber());
+            orderItemDto.setQuantity(this.quantity);
+            orderItemDto.setItem(this.item.toItemDto());
+
+            return orderItemDto;
+        }
+    }
+
+
+OrderEntity 클래스에 DTO로의 변환 메쏘드를 추가합니다
+==================================================================
+
+* OrderService 메쏘드들의 반환값을 기존과 동일하게 Order DTO로 맞추기 위해 OrderEntity 클래스에 Order DTO로의 변환 메쏘드를 추가합니다
+
+.. code-block:: java
+
+    public class OrderEntity {
+        // ...
+
+        public Order toOrderDto() {
+            Order orderDto = new Order();
+            orderDto.setOrderId(this.orderId);
+            orderDto.setOrderDate(this.orderDate);
+
+            if (this.orderItems != null) {
+                orderDto.setOrderItems(
+                        this.orderItems.stream()
+                                       .map(OrderItemEntity::toOrderItemDto)
+                                       .collect(Collectors.toList())
+                                      );
+            }
+
+            return orderDto;
+        }
+    }
+
+
+OrderService에서 OrderMapper와 OrderItemMapper 대신 OrderRepository를 참조하도록 수정합니다
+====================================================================================
 
 
 .. code-block:: java
@@ -32,3 +166,62 @@ OrderService에서 OrderMapper 대신 OrderReposity를 참조하도록 수정합
         // ...
     }
 
+OrderService의 `getOrder()` 메쏘드를 수정합니다
+==================================================================
+
+* `orderMapper.getOrder()` 대신 `orderRepository.findOne()` 메쏘드를 사용하도록 수정합니다
+* `orderRepository.findOne()` 메쏘드가 OrderEntity를 반환하므로 `toOrderDto()` 메쏘드를 호출하여 DTO로 변환해서 반환하도록 합니다
+
+.. code-block:: java
+
+    public class OrderService {
+        public Order getOrder(Long orderId) {
+            return orderRepository.findOne(orderId).toOrderDto();
+        }
+    }
+
+OrderService의 `createOrder()` 메쏘드를 수정합니다
+==================================================================
+
+* `orderMapper.insertOrder()`, `orderItemMapper.insertOrderItem()` 메쏘드를 호출하는 대신에 `orderRepository.save()` 메쏘드를 호출합니다
+* OrderEntity, OrderItemEntity, ItemEntity 클래스의 각 객체들을 생성하고 엔터티 클래스 간의 연관관계를 이용해서 값을 설정합니다
+* `orderRepository.save()` 메쏘드가 OrderEntity를 반환하므로 `toOrderDto()` 메쏘드를 호출하여 DTO로 변환해서 반환하도록 합니다
+
+.. code-block:: java
+
+    public class OrderService {
+        public Order createOrder(Order order) {
+            OrderEntity orderEntity = new OrderEntity();
+            orderEntity.setOrderDate(new Date());
+
+            order.getOrderItems()
+                    .forEach(orderItem -> {
+                        ItemEntity itemEntity = new ItemEntity();
+                        itemEntity.setItemId(orderItem.getItem().getItemId());
+
+                        OrderItemEntity orderItemEntity = new OrderItemEntity();
+                        orderItemEntity.setOrder(orderEntity);
+                        orderItemEntity.getPk().setLineNumber(orderItem.getLineNumber());
+                        orderItemEntity.setItem(itemEntity);
+                        orderItemEntity.setQuantity(orderItem.getQuantity());
+
+                        orderEntity.getOrderItems().add(orderItemEntity);
+                    });
+
+            return orderRepository.save(orderEntity).toOrderDto();
+        }
+    }
+
+
+OrderService의 `deleteOrder()` 메쏘드를 수정합니다
+==================================================================
+
+* `orderMapper.deleteOrder()` 메쏘드 호출 대신 `orderRepository.delete()` 메쏘드를 사용하도록 수정합니다
+
+.. code-block:: java
+
+    public class OrderService {
+        public void deleteOrder(Long orderId) {
+            orderRepository.delete(orderId);
+        }
+    }

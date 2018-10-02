@@ -32,7 +32,7 @@ OrderItemEntity 클래스에 OrderEntity 로의 연관관계를 추가합니다
     public class OrderItemEntity {
         // ...
 
-        // OrderItems-Orders 연관관계 추가
+        // OrderItemEntity-OrderEntity 연관관계 추가
         @JoinColumn(name = "order_id")
         @ManyToOne(fetch = FetchType.LAZY)
         @MapsId("orderId")
@@ -55,8 +55,8 @@ OrderEntity 클래스에 OrderItemEntity로의 연관관계를 추가합니다
     public class OrderEntity {
         // ...
 
-        // Orders-OrderItems 연관관계 추가
-        @OneToMany(mappedBy = "order", cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
+        // OrderEntity-OrderItemEntity 연관관계 추가
+        @OneToMany(mappedBy = "order", fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.REMOVE })
         List<OrderItemEntity> orderItems = new ArrayList<>();
 
     }

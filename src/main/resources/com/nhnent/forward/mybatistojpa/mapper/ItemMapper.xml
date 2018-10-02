@@ -27,4 +27,34 @@
         order by `item_id` asc
         limit #{offset}, #{limit}
     </select>
+
+    <insert id="insertItem" parameterType="Item">
+        insert into `Items`
+        (
+        `item_name`,
+        `price`
+        )
+        values
+        (
+        #{itemName},
+        #{price}
+        )
+        <selectKey resultType="long" keyProperty="itemId" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <update id="updateItem" parameterType="Item">
+        update `Items`
+        set
+          `item_name` = #{itemName},
+          `price` = #{price}
+        where `item_id` = #{itemId}
+    </update>
+
+    <delete id="deleteItem">
+        delete from `Items`
+        where `item_id` = #{value}
+    </delete>
+
 </mapper>

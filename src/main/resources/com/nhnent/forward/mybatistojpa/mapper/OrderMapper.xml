@@ -58,4 +58,25 @@
           limit #{offset}, #{limit}
         )
     </select>
+
+    <insert id="insertOrder" parameterType="Order">
+        insert into `Orders`
+        (
+        `order_date`
+        )
+        values
+        (
+        now()
+        )
+
+        <selectKey resultType="Long" keyProperty="orderId" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <delete id="deleteOrder">
+        delete from `Orders`
+        where `order_id` = #{value}
+    </delete>
+
 </mapper>

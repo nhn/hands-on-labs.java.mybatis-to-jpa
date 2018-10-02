@@ -12,4 +12,8 @@ public interface OrderMapper {
 
     Order getOrder(Long orderId);
 
+    int insertOrder(Order order);
+
+    int deleteOrder(Long orderId);
+
 }

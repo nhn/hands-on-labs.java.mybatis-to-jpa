@@ -12,4 +12,10 @@ public interface ItemMapper {
 
     Item getItem(Long itemId);
 
+    int insertItem(Item item);
+
+    int updateItem(Item item);
+
+    int deleteItem(Long itemId);
+
 }

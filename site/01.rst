@@ -17,4 +17,4 @@
 소스 코드
 ==========
 
-* https://github.com/nhnent/hands-on-labs.XXX
+* https://github.com/nhnent/hands-on-labs.java.mybatis-to-jpa.git

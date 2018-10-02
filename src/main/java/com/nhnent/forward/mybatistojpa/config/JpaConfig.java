@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -21,6 +22,7 @@ import java.util.Properties;
 @PropertySource("classpath:/properties/jdbc.properties")
 @EnableJpaRepositories("com.nhnent.forward.mybatistojpa.repository")
 @EnableTransactionManagement
+@EnableSpringDataWebSupport
 public class JpaConfig {
     @Value("${jdbc.driverClassName}")
     private String driveClassName;

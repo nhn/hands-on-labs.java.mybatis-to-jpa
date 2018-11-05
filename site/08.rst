@@ -2,12 +2,14 @@
 Pagination 구현 수정
 **********************
 
-JPA 설정에 `@EnableSpringDataWebSupport` 를 추가합니다
-==================================================
+JPA 설정에 ``@EnableSpringDataWebSupport`` 를 추가합니다
+========================================================
 
-* Spring Data JPA에서 제공해주는 `Pageable` 인터페이스를 사용하기 위해 JPA 설정에 `@EnableSpringDataWebSupport` 어노테이션을 추가합니다
+* Spring Data JPA에서 제공해주는 ``Pageable`` 인터페이스를 사용하기 위해 JPA 설정에 ``@EnableSpringDataWebSupport`` 어노테이션을 추가합니다
 
 .. code-block:: java
+
+    import org.springframework.data.web.config.EnableSpringDataWebSupport;
 
     // Pageable 인터페이스를 사용하기 위해 @EnableSpringDataWebSupport 추가
     @EnableSpringDataWebSupport
@@ -16,12 +18,14 @@ JPA 설정에 `@EnableSpringDataWebSupport` 를 추가합니다
     }
 
 ItemController에서 Pageable 객체를 파라미터로 받도록 수정합니다
-============================================================
+===============================================================
 
-* ItemController에서 pagination 처리를 위해 사용하던 `page` 파라미터 대신 Pageable 객체를 받도록 수정합니다
-* 전달받은 Pageable 객체를 그대로 `itemService.getItems()` 메쏘드로 전달합니다
+* ItemController에서 pagination 처리를 위해 사용하던 ``page`` 파라미터 대신 Pageable 객체를 받도록 수정합니다
+* 전달받은 Pageable 객체를 그대로 ``itemService.getItems()`` 메쏘드로 전달합니다
 
 .. code-block:: java
+
+    import org.springframework.data.domain.Pageable;
 
     public class ItemController {
         @GetMapping("")
@@ -33,13 +37,18 @@ ItemController에서 Pageable 객체를 파라미터로 받도록 수정합니�
 ItemService에서도 Pageable 파라미터를 받도룩 수정합니다
 ============================================================
 
-* Pageable을 이용하면 Spring Data JPA에서 제공하는 페이징 구현을 사용하므로 `itemMapper.getItemCount()` 메쏘드를 직접 호출하거나 직접 페이징 기능을 구현할 필요가 없습니다
-* `itemMapper.getItems()` 메쏘드 호출 대신 `itemRepository.findAll()` 메쏘드를 사용하도록 수정합니다
-* 전달받은 Pageable 객체를 `itemRepository.findAll()` 메쏘드로 전달합니다
-* `itemRepository.findAll()` 메쏘드는 Page<ItemEntity> 객체를 반환하므로 `getContent()` 메쏘드를 호출해서 List 객체로 변환하고,
-  List의 각 항목마다 `toItemDto()` 메쏘드를 호출하여 DTO로 변환해서 반환하도록 합니다
+* Pageable을 이용하면 Spring Data JPA에서 제공하는 페이징 구현을 사용하므로 ``itemMapper.getItemCount()`` 메쏘드를 직접 호출하거나 직접 페이징 기능을 구현할 필요가 없습니다
+* ``itemMapper.getItems()`` 메쏘드 호출 대신 ``itemRepository.findAll()`` 메쏘드를 사용하도록 수정합니다
+* 전달받은 Pageable 객체를 ``itemRepository.findAll()`` 메쏘드로 전달합니다
+* ``itemRepository.findAll()`` 메쏘드는 Page<ItemEntity> 객체를 반환하므로 ``getContent()`` 메쏘드를 호출해서 List 객체로 변환하고,
+  List의 각 항목마다 ``toItemDto()`` 메쏘드를 호출하여 DTO로 변환해서 반환하도록 합니다
 
 .. code-block:: java
+
+    import org.springframework.data.domain.Page;
+    import org.springframework.data.domain.Pageable;
+
+    import java.util.stream.Collectors;
 
     @Service
     public class ItemService {
@@ -55,12 +64,14 @@ ItemService에서도 Pageable 파라미터를 받도룩 수정합니다
 
 
 OrderController에서 Pageable 객체를 파라미터로 받도록 수정합니다
-============================================================
+==================================================================
 
-* OrderController에서도 `page` 파라미터 대신 Pageable 객체를 받도록 수정합니다
-* 전달받은 Pageable 객체를 그대로 `orderService.getOrders()` 메쏘드로 전달합니다
+* OrderController에서도 ``page`` 파라미터 대신 Pageable 객체를 받도록 수정합니다
+* 전달받은 Pageable 객체를 그대로 ``orderService.getOrders()`` 메쏘드로 전달합니다
 
 .. code-block:: java
+
+    import org.springframework.data.domain.Pageable;
 
     public class OrderController {
         @GetMapping("")
@@ -73,13 +84,18 @@ OrderController에서 Pageable 객체를 파라미터로 받도록 수정합니�
 OrderService에서도 Pageable 파라미터를 받도룩 수정합니다
 ============================================================
 
-* Pageable을 이용하므로 `orderMapper.getOrderCount()` 메쏘드를 직접 호출하거나 직접 페이징 기능을 구현할 필요가 없습니다
-* `orderMapper.getOrders()` 메쏘드 호출 대신 `orderRepository.findAll()` 메쏘드를 사용하도록 수정합니다
-* 전달받은 Pageable 객체를 `orderRepository.findAll()` 메쏘드로 전달합니다
-* `orderRepository.findAll()` 메쏘드는 Page<OrderEntity> 객체를 반환하므로 `getContent()` 메쏘드를 호출해서 List 객체로 변환하고,
-  List의 각 항목마다 `toOrderDto()` 메쏘드를 호출하여 DTO로 변환해서 반환하도록 합니다
+* Pageable을 이용하므로 ``orderMapper.getOrderCount()`` 메쏘드를 직접 호출하거나 직접 페이징 기능을 구현할 필요가 없습니다
+* ``orderMapper.getOrders()`` 메쏘드 호출 대신 ``orderRepository.findAll()`` 메쏘드를 사용하도록 수정합니다
+* 전달받은 Pageable 객체를 ``orderRepository.findAll()`` 메쏘드로 전달합니다
+* ``orderRepository.findAll()`` 메쏘드는 Page<OrderEntity> 객체를 반환하므로 ``getContent()`` 메쏘드를 호출해서 List 객체로 변환하고,
+  List의 각 항목마다 ``toOrderDto()`` 메쏘드를 호출하여 DTO로 변환해서 반환하도록 합니다
 
 .. code-block:: java
+
+    import org.springframework.data.domain.Page;
+    import org.springframework.data.domain.Pageable;
+
+    import java.util.stream.Collectors;
 
     @Service
     public class OrderService {

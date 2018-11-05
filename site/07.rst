@@ -1,6 +1,6 @@
-**********************
+*************************
 어플리케이션에서의 사용
-**********************
+*************************
 
 ItemEntity 클래스에 DTO로의 변환 메쏘드를 추가합니다
 ==================================================================
@@ -8,6 +8,8 @@ ItemEntity 클래스에 DTO로의 변환 메쏘드를 추가합니다
 * ItemService 메쏘드들의 반환값을 기존과 동일하게 Item DTO로 맞추기 위해 ItemEntity 클래스에 Item DTO로의 변환 메쏘드를 추가합니다
 
 .. code-block:: java
+
+    import com.nhnent.forward.mybatistojpa.model.Item;
 
     public class ItemEntity {
         // ...
@@ -24,9 +26,11 @@ ItemEntity 클래스에 DTO로의 변환 메쏘드를 추가합니다
 
 
 ItemService에서 ItemMapper 대신 ItemRepository를 참조하도록 수정합니다
-==================================================================
+========================================================================
 
 .. code-block:: java
+
+    import com.nhnent.forward.mybatistojpa.repository.ItemRepository;
 
     @Service
     public class ItemService {
@@ -36,11 +40,11 @@ ItemService에서 ItemMapper 대신 ItemRepository를 참조하도록 수정합�
         // ...
     }
 
-ItemService의 `getItem()` 메쏘드를 수정합니다
+ItemService의 ``getItem()`` 메쏘드를 수정합니다
 ==================================================================
 
-* `itemMapper.getItem()` 대신 `itemRepository.findOne()` 메쏘드를 사용하도록 수정합니다
-* `itemRepository.findOne()` 메쏘드가 ItemEntity를 반환하므로 `toItemDto()` 메쏘드를 호출하여 DTO로 변환해서 반환하도록 합니다
+* ``itemMapper.getItem()`` 대신 ``itemRepository.findOne()`` 메쏘드를 사용하도록 수정합니다
+* ``itemRepository.findOne()`` 메쏘드가 ItemEntity를 반환하므로 ``toItemDto()`` 메쏘드를 호출하여 DTO로 변환해서 반환하도록 합니다
 
 .. code-block:: java
 
@@ -53,10 +57,12 @@ ItemService의 `getItem()` 메쏘드를 수정합니다
 ItemService의 `createItem()` 메쏘드를 수정합니다
 ==================================================================
 
-* `itemMapper.insertItem()` 메쏘드 호출 대신에, ItemEntity 클래스의 객체를 생성한 후 `itemRepository.save()` 메쏘드를 호출합니다
-* `itemRepository.save()` 메쏘드가 ItemEntity를 반환하므로 `toItemDto()` 메쏘드를 호출하여 DTO로 변환해서 반환하도록 합니다
+* ``itemMapper.insertItem()`` 메쏘드 호출 대신에, ItemEntity 클래스의 객체를 생성한 후 ``itemRepository.save()`` 메쏘드를 호출합니다
+* ``itemRepository.save()`` 메쏘드가 ItemEntity를 반환하므로 ``toItemDto()`` 메쏘드를 호출하여 DTO로 변환해서 반환하도록 합니다
 
 .. code-block:: java
+
+    import com.nhnent.forward.mybatistojpa.entity.ItemEntity;
 
     public class ItemService {
         public Item createItem(Item item) {
@@ -69,11 +75,11 @@ ItemService의 `createItem()` 메쏘드를 수정합니다
     }
 
 
-ItemService의 `updateItem()` 메쏘드를 수정합니다
+ItemService의 ``updateItem()`` 메쏘드를 수정합니다
 ==================================================================
 
-* `itemMapper.updateItem()` 메쏘드 호출 대신에, ItemEntity 클래스의 객체를 변경한 후 `itemRepository.save()` 메쏘드를 호출합니다
-* `itemRepository.save()` 메쏘드가 ItemEntity를 반환하므로 `toItemDto()` 메쏘드를 호출하여 DTO로 변환해서 반환하도록 합니다
+* ``itemMapper.updateItem()`` 메쏘드 호출 대신에, ItemEntity 클래스의 객체를 변경한 후 ``itemRepository.save()`` 메쏘드를 호출합니다
+* ``itemRepository.save()`` 메쏘드가 ItemEntity를 반환하므로 ``toItemDto()`` 메쏘드를 호출하여 DTO로 변환해서 반환하도록 합니다
 
 .. code-block:: java
 
@@ -88,10 +94,10 @@ ItemService의 `updateItem()` 메쏘드를 수정합니다
         }
     }
 
-ItemService의 `deleteItem()` 메쏘드를 수정합니다
+ItemService의 ``deleteItem()`` 메쏘드를 수정합니다
 ==================================================================
 
-* `itemMapper.deleteItem()` 메쏘드 호출 대신 `itemRepository.delete()` 메쏘드를 사용하도록 수정합니다
+* ``itemMapper.deleteItem()`` 메쏘드 호출 대신 ``itemRepository.delete()`` 메쏘드를 사용하도록 수정합니다
 
 .. code-block:: java
 
@@ -108,6 +114,8 @@ OrderItemEntity 클래스에 DTO로의 변환 메쏘드를 추가합니다
 * OrderItemEntity 클래스에 OrderItem DTO로의 변환 메쏘드를 추가합니다
 
 .. code-block:: java
+
+    import com.nhnent.forward.mybatistojpa.model.OrderItem;
 
     public class OrderItemEntity {
         // ...
@@ -131,6 +139,10 @@ OrderEntity 클래스에 DTO로의 변환 메쏘드를 추가합니다
 
 .. code-block:: java
 
+    import com.nhnent.forward.mybatistojpa.model.Order;
+
+    import java.util.stream.Collectors;
+
     public class OrderEntity {
         // ...
 
@@ -153,10 +165,12 @@ OrderEntity 클래스에 DTO로의 변환 메쏘드를 추가합니다
 
 
 OrderService에서 OrderMapper와 OrderItemMapper 대신 OrderRepository를 참조하도록 수정합니다
-====================================================================================
+=============================================================================================
 
 
 .. code-block:: java
+
+    import com.nhnent.forward.mybatistojpa.repository.OrderRepository;
 
     @Service
     public class OrderService {
@@ -169,8 +183,8 @@ OrderService에서 OrderMapper와 OrderItemMapper 대신 OrderRepository를 참�
 OrderService의 `getOrder()` 메쏘드를 수정합니다
 ==================================================================
 
-* `orderMapper.getOrder()` 대신 `orderRepository.findOne()` 메쏘드를 사용하도록 수정합니다
-* `orderRepository.findOne()` 메쏘드가 OrderEntity를 반환하므로 `toOrderDto()` 메쏘드를 호출하여 DTO로 변환해서 반환하도록 합니다
+* ``orderMapper.getOrder()`` 대신 ``orderRepository.findOne()`` 메쏘드를 사용하도록 수정합니다
+* ``orderRepository.findOne()`` 메쏘드가 OrderEntity를 반환하므로 ``toOrderDto()`` 메쏘드를 호출하여 DTO로 변환해서 반환하도록 합니다
 
 .. code-block:: java
 
@@ -180,14 +194,21 @@ OrderService의 `getOrder()` 메쏘드를 수정합니다
         }
     }
 
-OrderService의 `createOrder()` 메쏘드를 수정합니다
+OrderService의 ``createOrder()`` 메쏘드를 수정합니다
 ==================================================================
 
-* `orderMapper.insertOrder()`, `orderItemMapper.insertOrderItem()` 메쏘드를 호출하는 대신에 `orderRepository.save()` 메쏘드를 호출합니다
+* ``orderMapper.insertOrder()``, ``orderItemMapper.insertOrderItem()`` 메쏘드를 호출하는 대신에 ``orderRepository.save()`` 메쏘드를 호출합니다
 * OrderEntity, OrderItemEntity, ItemEntity 클래스의 각 객체들을 생성하고 엔터티 클래스 간의 연관관계를 이용해서 값을 설정합니다
-* `orderRepository.save()` 메쏘드가 OrderEntity를 반환하므로 `toOrderDto()` 메쏘드를 호출하여 DTO로 변환해서 반환하도록 합니다
+* ``orderRepository.save()`` 메쏘드가 OrderEntity를 반환하므로 ``toOrderDto()`` 메쏘드를 호출하여 DTO로 변환해서 반환하도록 합니다
 
 .. code-block:: java
+
+    import com.nhnent.forward.mybatistojpa.entity.ItemEntity;
+    import com.nhnent.forward.mybatistojpa.entity.OrderEntity;
+    import com.nhnent.forward.mybatistojpa.entity.OrderItemEntity;
+    import com.nhnent.forward.mybatistojpa.model.Order;
+
+    import java.util.Date;
 
     public class OrderService {
         public Order createOrder(Order order) {
@@ -216,7 +237,7 @@ OrderService의 `createOrder()` 메쏘드를 수정합니다
 OrderService의 `deleteOrder()` 메쏘드를 수정합니다
 ==================================================================
 
-* `orderMapper.deleteOrder()` 메쏘드 호출 대신 `orderRepository.delete()` 메쏘드를 사용하도록 수정합니다
+* ``orderMapper.deleteOrder()`` 메쏘드 호출 대신 ``orderRepository.delete()`` 메쏘드를 사용하도록 수정합니다
 
 .. code-block:: java
 

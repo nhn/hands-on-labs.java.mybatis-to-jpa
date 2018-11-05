@@ -5,20 +5,20 @@
 spring-data-jpa 라이브러리 추가
 ===============================
 
-`pom.xml` 에 `spring-data-jpa` 라이브러리를 추가합니다
+``pom.xml`` 에 ``spring-data-jpa`` 라이브러리를 추가합니다
 
 .. code-block:: xml
 
     <dependency>
         <groupId>org.springframework.data</groupId>
         <artifactId>spring-data-jpa</artifactId>
-        <version>1.11.14.RELEASE</version>
+        <version>1.11.16.RELEASE</version>
     </dependency>
 
 hibernate 라이브러리 추가
 =========================
 
-`pom.xml` 에 `hibernate-entitymanager` 라이브러리를 추가합니다
+``pom.xml`` 에 ``hibernate-entitymanager`` 라이브러리를 추가합니다
 
 .. code-block:: xml
 
@@ -31,7 +31,7 @@ hibernate 라이브러리 추가
 mybatis 라이브러리 삭제
 ========================
 
-`pom.xml` 에서 더 이상 필요가 없는 mybatis 라이브러리는 삭제합니다
+``pom.xml`` 에서 더 이상 필요가 없는 mybatis 라이브러리는 삭제합니다
 
 .. code-block:: xml
 

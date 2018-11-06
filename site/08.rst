@@ -29,7 +29,7 @@ ItemController에서 Pageable 객체를 파라미터로 받도록 수정합니�
 
     public class ItemController {
         @GetMapping("")
-        public Page<Item> getItems(Pageable pageable) {
+        public List<Item> getItems(Pageable pageable) {
             return itemService.getItems(pageable);
         }
     }
@@ -75,7 +75,7 @@ OrderController에서 Pageable 객체를 파라미터로 받도록 수정합니�
 
     public class OrderController {
         @GetMapping("")
-        public Page<Order> getOrders(Pageable pageable) {
+        public List<Order> getOrders(Pageable pageable) {
             return orderService.getOrders(pageable);
         }
     }

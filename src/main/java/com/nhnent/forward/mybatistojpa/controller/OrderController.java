@@ -22,6 +22,7 @@ public class OrderController {
     OrderService orderService;
 
 
+    // NOTE #22 : OrderController에서의 pagination 구현 (page 파라미터)
     @GetMapping("")
     public List<Order> getOrders(@RequestParam(defaultValue = "1") int page) {
         if (page < 1) {

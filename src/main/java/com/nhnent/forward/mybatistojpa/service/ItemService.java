@@ -14,6 +14,7 @@ public class ItemService {
     @Autowired
     private ItemMapper itemMapper;
 
+    // NOTE #21 : pagination 구현
     public List<Item> getItems(int pageNumber, int pageSize) {
         int totalCount = itemMapper.getItemCount();
 
@@ -25,6 +26,7 @@ public class ItemService {
         return itemMapper.getItems(pageOffset, pageSize);
     }
 
+    // NOTE #18 : 어플리케이션에서의 사용
     public Item getItem(Long itemId) {
         return itemMapper.getItem(itemId);
     }

@@ -23,6 +23,7 @@ public class ItemController {
     ItemService itemService;
 
 
+    // NOTE #20 : ItemController에서의 pagination 구현 (page 파라미터)
     @GetMapping("")
     public List<Item> getItems(@RequestParam(defaultValue = "1") int page) {
         if (page < 1) {

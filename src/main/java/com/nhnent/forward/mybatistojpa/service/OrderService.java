@@ -19,6 +19,7 @@ public class OrderService {
     private OrderItemMapper orderItemMapper;
 
 
+    // NOTE #23 : pagination 구현
     public List<Order> getOrders(int pageNumber, int pageSize) {
         int totalCount = orderMapper.getOrderCount();
 
@@ -30,6 +31,7 @@ public class OrderService {
         return orderMapper.getOrders(pageOffset, pageSize);
     }
 
+    // NOTE #19 : 어플리케이션에서의 사용
     public Order getOrder(Long orderId) {
         return orderMapper.getOrder(orderId);
     }

@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+// NOTE #10 : Items 테이블에 대한 CRUD 쿼리에 맵핑되는 java interface 메쏘드
 public interface ItemMapper {
     int getItemCount();
 

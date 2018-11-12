@@ -7,6 +7,7 @@
         `price`
     </sql>
 
+    <!-- NOTE #6 : Items 테이블에 대한 select query -->
     <select id="getItem" resultType="Item">
         select
           <include refid="itemFields" />
@@ -28,6 +29,7 @@
         limit #{offset}, #{limit}
     </select>
 
+    <!-- NOTE #7 : Items 테이블에 대한 insert query -->
     <insert id="insertItem" parameterType="Item">
         insert into `Items`
         (
@@ -44,6 +46,7 @@
         </selectKey>
     </insert>
 
+    <!-- NOTE #8 : Items 테이블에 대한 update query -->
     <update id="updateItem" parameterType="Item">
         update `Items`
         set
@@ -52,6 +55,7 @@
         where `item_id` = #{itemId}
     </update>
 
+    <!-- NOTE #9 : Items 테이블에 대한 delete query -->
     <delete id="deleteItem">
         delete from `Items`
         where `item_id` = #{value}

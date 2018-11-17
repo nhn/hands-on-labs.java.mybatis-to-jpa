@@ -57,9 +57,9 @@ source_encoding = 'utf-8'
 master_doc = 'index'
 
 # General information about the project.
-project = 'MyBatis to JPA 마이그레이션 실습'
+project = 'MyBatis to JPA'
 copyright = 'NHN Entertainment'
-author = 'cybaek'
+author = ''
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -350,3 +350,5 @@ texinfo_documents = [
 # texinfo_no_detailmenu = False
 
 
+def setup(app):
+    app.add_stylesheet('css/custom.css')
